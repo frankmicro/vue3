@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        .box {
+            margin-top: 50px;
+            padding: 50px;
+            width: 50px;
+            height: 50px;
+            background-color: green;
+        }
+        .box-else {
+            margin-top: 50px;
+            padding: 50px;
+            width: 50px;
+            height: 50px;
+            background-color: black;
+        }
+        .box-else-if {
+            margin-top: 50px;
+            padding: 50px;
+            width: 50px;
+            height: 50px;
+            background-color: red;
+        }
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <div id="app" v-cloak>
+        <h1>{{ greeting }}</h1>
+        <!-- keyup event -->
+        <input @keyup.enter type="text" v-model="greeting"></input>
+        <div class="box" v-if="flag"></div>
+        <div class="box-else" v-else></div>
+        <div>
+            <button @click.prevent.stop="operateCss()" style="margin-top: 6px;">click me!</button>
+            <!-- prevent stop -->
+        </div>
+        
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        let app = Vue.createApp({
+            data() {
+                return {
+                    greeting : 'hello there..',
+                    flag : true,
+                }
+            },
+            methods : {
+                    operateCss : function() {
+                    this.flag = !this.flag;
+                    this.counter++;
+                }
+            }
+        });
+
+        app.component('')
+
+        app.mount('#app');
+    </script>
+</body>
+</html>
