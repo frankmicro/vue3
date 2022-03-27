@@ -8,42 +8,18 @@
 </head>
 <body>
     <style>
-        .box {
-            margin-top: 50px;
-            padding: 50px;
-            width: 50px;
-            height: 50px;
-            background-color: green;
-        }
-        .box-else {
-            margin-top: 50px;
-            padding: 50px;
-            width: 50px;
-            height: 50px;
-            background-color: black;
-        }
-        .box-else-if {
-            margin-top: 50px;
-            padding: 50px;
-            width: 50px;
-            height: 50px;
-            background-color: red;
-        }
         [v-cloak] {
             display: none;
         }
+        input {
+            margin: 2px;
+            display: block;
+        }
     </style>
     <div id="app" v-cloak>
-        <h1>{{ greeting }}</h1>
-        <!-- keyup event -->
-        <input @keyup.enter type="text" v-model="greeting"></input>
-        <div class="box" v-if="flag"></div>
-        <div class="box-else" v-else></div>
-        <div>
-            <button @click.prevent.stop="operateCss()" style="margin-top: 6px;">click me!</button>
-            <!-- prevent stop -->
+        <div class="login-form">
+            <login-form/>
         </div>
-        
     </div>
     <script src="https://unpkg.com/vue@next"></script>
     <script>
@@ -61,9 +37,55 @@
                 }
             }
         });
-
-        app.component('')
-
+        
+        app.component('login-form', {
+            template:`
+            <div>
+                <form @submit.prevent.stop="formSubmit">
+                    <h3>{{ form.title }}</h3>
+                    <custom-input v-model="form.email" v-bind:label="form.emailLabel"/>
+                    <custom-input v-model="form.password" v-bind:label="form.passwordLabel"/>
+                    <button>Log In</button>
+                </form>
+            </div>    
+            `,
+            components:['custom-input'],
+            data() {
+                return {
+                    form : {
+                        title : 'Login Form',
+                        emailLabel : 'Email',
+                        passwordLabel : 'Password',
+                        email : 'a',
+                        password : 'f'
+                    }
+                }
+            },
+            methods: {
+                formSubmit() {
+                    console.log('submitted', this.form);
+                }
+            }
+        });
+        app.component('custom-input', {
+            template:`
+                <label>
+                    {{ label }}
+                    <input type="text" v-model="inputValue">
+                </label>
+            `,
+            props:['label','modelValue'],
+            computed : {
+                inputValue : {
+                    get() {
+                        return this.modelValue;
+                    },
+                    set(value) {
+                        this.$emit('update:modelValue', value);
+                    }
+                }
+            }
+        });
         app.mount('#app');
     </script>
 </body>
