@@ -43,8 +43,12 @@
             <div>
                 <form @submit.prevent.stop="formSubmit">
                     <h3>{{ form.title }}</h3>
-                    <custom-input v-model="form.email" v-bind:label="form.emailLabel"/>
-                    <custom-input v-model="form.password" v-bind:label="form.passwordLabel"/>
+                    <custom-input 
+                    v-for="(input,i) in inputs" :key="i" 
+                    v-model="input.value" 
+                    :label="input.label"
+                    :type="input.type"
+                    />
                     <button>Log In</button>
                 </form>
             </div>    
@@ -52,18 +56,26 @@
             components:['custom-input'],
             data() {
                 return {
+                    inputs:[
+                        {
+                            label : 'email',
+                            value : '',
+                            type : 'email'
+                        },
+                        {
+                            label : 'password',
+                            value : '',
+                            type : 'password'
+                        }
+                    ],
                     form : {
-                        title : 'Login Form',
-                        emailLabel : 'Email',
-                        passwordLabel : 'Password',
-                        email : 'a',
-                        password : 'f'
+                        title : 'Login Form'
                     }
                 }
             },
             methods: {
                 formSubmit() {
-                    console.log('submitted', this.form);
+                    console.log('submitted', this.inputs);
                 }
             }
         });
@@ -71,10 +83,10 @@
             template:`
                 <label>
                     {{ label }}
-                    <input type="text" v-model="inputValue">
+                    <input :type="type" v-model="inputValue">
                 </label>
             `,
-            props:['label','modelValue'],
+            props:['label','modelValue', 'type'],
             computed : {
                 inputValue : {
                     get() {
